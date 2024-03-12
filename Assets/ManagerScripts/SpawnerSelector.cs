@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 public class SpawnerSelector : MonoBehaviour
@@ -14,6 +16,21 @@ public class SpawnerSelector : MonoBehaviour
     void GetChilds()
     {
         spawners = GameObject.FindGameObjectsWithTag("ItemSpawner");
+    }
+
+    void RemoveSpawner(int index)
+    {
+        GameObject[] temp = new GameObject[spawners.Length - 1];
+        int j = 0;
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            if (i != index)
+            {
+                temp[j] = spawners[i];
+                j++;
+            }
+        }
+        spawners = temp;
     }
 
     void Start()
@@ -31,6 +48,7 @@ public class SpawnerSelector : MonoBehaviour
             int randomIndex = Random.Range(0, spawners.Length);
             GameObject spawner = spawners[randomIndex];
             Instantiate(itemSpawnable, spawner.transform.position, spawner.transform.rotation);
+            RemoveSpawner(randomIndex);
         }
     }
 }

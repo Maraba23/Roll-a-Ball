@@ -55,7 +55,9 @@ public class PlayerController : MonoBehaviour
 
    private void FixedUpdate()
    {
-        Vector3 movement = new Vector3 (MainCamera.transform.forward.x * movementY, 0.0f, MainCamera.transform.forward.z * movementY);
+        movementX = MainCamera.transform.right.x * movementX + MainCamera.transform.forward.x * movementY;
+        movementY = MainCamera.transform.right.z * movementX + MainCamera.transform.forward.z * movementY;
+        Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
         rb.AddForce(movement * speed);
         if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
