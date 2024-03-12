@@ -12,13 +12,15 @@ public class PlayerController : MonoBehaviour
     public float speed = 0;
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
+
+    public GameObject MainCamera;
     private int count;
 
     // Start is called before the first frame update
     void Start()
     {
         winTextObject.SetActive(false);
-        count = 0;
+        count = SpawnerSelector.count;
         rb = GetComponent <Rigidbody>();
         SetCountText();
     }
@@ -30,10 +32,22 @@ public class PlayerController : MonoBehaviour
         movementY = movementVector.y;
     }
 
+    void Move90Degrees(string direction)
+    {
+        if (direction == "left")
+        {
+            transform.Rotate(0, 90, 0);
+        }
+        else if (direction == "right")
+        {
+            transform.Rotate(0, -90, 0);
+        }
+    }
+
    void SetCountText()
    {
        countText.text = "Count: " + count.ToString();
-       if (count >= 5)
+       if (count == 0)
        {
            winTextObject.SetActive(true);
        }
@@ -41,8 +55,16 @@ public class PlayerController : MonoBehaviour
 
    private void FixedUpdate()
    {
-        Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
+        Vector3 movement = new Vector3 (MainCamera.transform.forward.x * movementY, 0.0f, MainCamera.transform.forward.z * movementY);
         rb.AddForce(movement * speed);
+        if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+        {
+            Move90Degrees("left");
+        }
+        else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+        {
+            Move90Degrees("right");
+        }
    }
 
     void OnTriggerEnter(Collider other)
@@ -50,7 +72,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("PickUp"))
         {
             other.gameObject.SetActive(false);
-            count = count + 1;
+            count--;
             SetCountText();
         }
         
