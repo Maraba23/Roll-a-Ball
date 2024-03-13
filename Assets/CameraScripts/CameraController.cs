@@ -1,45 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
-    private Quaternion targetRotation;
-    public float rotationSpeed = 1.0f;
+    public float rotationSpeed = 5.0f; // Ajuste para tornar a rotação mais rápida ou mais lenta
+
+    private float mouseX;
 
     void Start()
     {
         transform.position = player.transform.position;
-        targetRotation = transform.rotation;
+        // Bloqueia o cursor no centro da tela e o torna invisível
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void UpdateTargetRotation(string direction)
+    void Update()
     {
-        if (direction == "left")
-        {
-            targetRotation *= Quaternion.Euler(0, 90, 0);
-        }
-        else if (direction == "right")
-        {
-            targetRotation *= Quaternion.Euler(0, -90, 0);
-        }
+        // Obtém o movimento horizontal do mouse e multiplica pela velocidade de rotação
+        mouseX += Input.GetAxis("Mouse X") * rotationSpeed;
+
+        // Aplica a rotação ao redor do eixo Y
+        transform.rotation = Quaternion.Euler(0, mouseX, 0);
     }
 
     void LateUpdate()
     {
+        // Mantém a câmera na posição do jogador, mas não altera sua rotação aqui
         transform.position = player.transform.position;
-        
-        if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
-        {
-            UpdateTargetRotation("left");
-        }
-        else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
-        {
-            UpdateTargetRotation("right");
-        }
-        
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
 }

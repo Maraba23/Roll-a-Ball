@@ -4567,7 +4567,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawners: []
   itemSpawnable: {fileID: 3214310651470603359, guid: 5f17942b8805fa942944a61fa4d2e305, type: 3}
-  qtdSpawners: 35
+  qtdSpawners: 20
 --- !u!4 &481932058
 Transform:
   m_ObjectHideFlags: 0

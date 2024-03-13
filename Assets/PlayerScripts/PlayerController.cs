@@ -71,11 +71,11 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(movement * speed);
         if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
-            Move90Degrees("left");
+            Move90Degrees("right");
         }
         else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
-            Move90Degrees("right");
+            Move90Degrees("left");
         }
    }
 
