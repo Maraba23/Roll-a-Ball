@@ -5,36 +5,41 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-
     public GameObject player;
+    private Quaternion targetRotation;
+    public float rotationSpeed = 1.0f;
 
     void Start()
     {
         transform.position = player.transform.position;
+        targetRotation = transform.rotation;
     }
 
-    void Move90Degrees(string direction)
+    void UpdateTargetRotation(string direction)
     {
         if (direction == "left")
         {
-            transform.Rotate(0, 90, 0);
+            targetRotation *= Quaternion.Euler(0, 90, 0);
         }
         else if (direction == "right")
         {
-            transform.Rotate(0, -90, 0);
+            targetRotation *= Quaternion.Euler(0, -90, 0);
         }
     }
 
     void LateUpdate()
     {
         transform.position = player.transform.position;
+        
         if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
-            Move90Degrees("left");
+            UpdateTargetRotation("left");
         }
         else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
-            Move90Degrees("right");
+            UpdateTargetRotation("right");
         }
+        
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
 }

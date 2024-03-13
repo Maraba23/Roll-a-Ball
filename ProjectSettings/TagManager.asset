@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PickUp
   - ItemSpawner
+  - EnemySpawner
   layers:
   - Default
   - TransparentFX

@@ -11,7 +11,9 @@ public class PlayerController : MonoBehaviour
     private float movementY;
     public float speed = 0;
     public TextMeshProUGUI countText;
+    public TextMeshProUGUI timerText;
     public GameObject winTextObject;
+    public GameObject loseTextObject;
 
     public GameObject MainCamera;
     private int count;
@@ -20,6 +22,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         winTextObject.SetActive(false);
+        loseTextObject.SetActive(false);
         count = SpawnerSelector.count;
         rb = GetComponent <Rigidbody>();
         SetCountText();
@@ -53,11 +56,18 @@ public class PlayerController : MonoBehaviour
        }
    }
 
+    void Update()
+    {
+        timerText.text = "Time: " + Time.timeSinceLevelLoad.ToString("F2");
+        if (EnemyController.isDead)
+        {
+            loseTextObject.SetActive(true);
+        }
+    }
+
    private void FixedUpdate()
    {
-        movementX = MainCamera.transform.right.x * movementX + MainCamera.transform.forward.x * movementY;
-        movementY = MainCamera.transform.right.z * movementX + MainCamera.transform.forward.z * movementY;
-        Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
+        Vector3 movement = new Vector3 (MainCamera.transform.forward.x * movementY, 0.0f, MainCamera.transform.forward.z * movementY) + new Vector3 (MainCamera.transform.right.x * movementX, 0.0f, MainCamera.transform.right.z * movementX);
         rb.AddForce(movement * speed);
         if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
