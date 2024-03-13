@@ -3,16 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class EnemyController : MonoBehaviour
 {
     public GameObject playerToFollow;
     public float speed;
     public static bool isDead = false;
+    public AudioSource[] audioSources;
+
+    // Variáveis para controlar a reprodução dos sons
+    public float soundMinDelay = 30f;
+    public float soundMaxDelay = 60f;
 
     void Start()
     {
         playerToFollow = GameObject.Find("Player");
+        audioSources = GetComponents<AudioSource>();
+        StartCoroutine(PlayRandomSounds());
     }
 
     void FollowPlayer()
@@ -34,6 +42,10 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject == playerToFollow)
         {
             isDead = true;
+            foreach (var source in audioSources)
+            {
+                source.Stop(); // Parar todos os sons quando o inimigo morrer
+            }
             StartCoroutine(WaitAndLoadMenu());
         }
     }
@@ -41,7 +53,27 @@ public class EnemyController : MonoBehaviour
     IEnumerator WaitAndLoadMenu()
     {
         yield return new WaitForSeconds(3);
-
         SceneManager.LoadScene("MainMenu");
+    }
+
+    IEnumerator PlayRandomSounds()
+    {
+        // Este loop roda enquanto o inimigo não está morto
+        while (!isDead)
+        {
+            float waitTime = Random.Range(soundMinDelay, soundMaxDelay);
+            Debug.Log($"Próximo som em {waitTime} segundos."); // Isto imprimirá o tempo de espera no console
+            yield return new WaitForSeconds(waitTime);
+            
+            // Escolhe um som aleatório para tocar se houver sons disponíveis
+            if (audioSources.Length > 0)
+            {
+                int index = Random.Range(0, audioSources.Length);
+                if (!audioSources[index].isPlaying)
+                {
+                    audioSources[index].Play();
+                }
+            }
+        }
     }
 }

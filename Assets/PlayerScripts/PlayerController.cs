@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI timerText;
     public GameObject winTextObject;
     public GameObject loseTextObject;
-
+    public AudioSource collectSound;
     public GameObject MainCamera;
     private int count;
 
@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         winTextObject.SetActive(false);
         loseTextObject.SetActive(false);
+        collectSound = GetComponent<AudioSource>();
         count = SpawnerSelector.count;
         rb = GetComponent <Rigidbody>();
         SetCountText();
@@ -33,18 +34,6 @@ public class PlayerController : MonoBehaviour
         Vector2 movementVector = movementValue.Get<Vector2>();
         movementX = movementVector.x; 
         movementY = movementVector.y;
-    }
-
-    void Move90Degrees(string direction)
-    {
-        if (direction == "left")
-        {
-            transform.Rotate(0, 90, 0);
-        }
-        else if (direction == "right")
-        {
-            transform.Rotate(0, -90, 0);
-        }
     }
 
    void SetCountText()
@@ -69,14 +58,6 @@ public class PlayerController : MonoBehaviour
    {
         Vector3 movement = new Vector3 (MainCamera.transform.forward.x * movementY, 0.0f, MainCamera.transform.forward.z * movementY) + new Vector3 (MainCamera.transform.right.x * movementX, 0.0f, MainCamera.transform.right.z * movementX);
         rb.AddForce(movement * speed);
-        if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
-        {
-            Move90Degrees("right");
-        }
-        else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
-        {
-            Move90Degrees("left");
-        }
    }
 
     void OnTriggerEnter(Collider other)
@@ -84,6 +65,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("PickUp"))
         {
             other.gameObject.SetActive(false);
+            collectSound.Play();
             count--;
             SetCountText();
         }

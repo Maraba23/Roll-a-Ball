@@ -4,10 +4,11 @@ using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour
 {
 
-    public AudioSource audioSource;
+    private AudioSource audioSource;
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         audioSource.Play();
     }
     public void StartGame()
