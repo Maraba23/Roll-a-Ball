@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine;
@@ -23,7 +21,6 @@ public class PlayerController : MonoBehaviour
     {
         winTextObject.SetActive(false);
         loseTextObject.SetActive(false);
-        collectSound = GetComponent<AudioSource>();
         count = SpawnerSelector.count;
         rb = GetComponent <Rigidbody>();
         SetCountText();

@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -13,8 +11,8 @@ public class EnemyController : MonoBehaviour
     public AudioSource[] audioSources;
 
     // Variáveis para controlar a reprodução dos sons
-    public float soundMinDelay = 30f;
-    public float soundMaxDelay = 60f;
+    public float soundMinDelay = 20.0f;
+    public float soundMaxDelay = 40.0f;
 
     void Start()
     {
@@ -61,7 +59,7 @@ public class EnemyController : MonoBehaviour
         // Este loop roda enquanto o inimigo não está morto
         while (!isDead)
         {
-            float waitTime = Random.Range(soundMinDelay, soundMaxDelay);
+            float waitTime = 80.0f; //Random.Range(soundMinDelay, soundMaxDelay);
             Debug.Log($"Próximo som em {waitTime} segundos."); // Isto imprimirá o tempo de espera no console
             yield return new WaitForSeconds(waitTime);
             
