@@ -1,6 +1,8 @@
 using TMPro;
+using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public AudioSource collectSound;
     public GameObject MainCamera;
     private int count;
+    private bool win;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +27,7 @@ public class PlayerController : MonoBehaviour
         count = SpawnerSelector.count;
         rb = GetComponent <Rigidbody>();
         SetCountText();
+        win = false;
     }
 
     void OnMove (InputValue movementValue)
@@ -38,13 +42,21 @@ public class PlayerController : MonoBehaviour
        countText.text = "Count: " + count.ToString();
        if (count == 0)
        {
-           winTextObject.SetActive(true);
+            winTextObject.SetActive(true);
+            StartCoroutine(WaitAndLoadMenu());
        }
    }
 
+    IEnumerator WaitAndLoadMenu()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene("MainMenu");
+    }
+
     void Update()
     {
-        timerText.text = "Time: " + Time.timeSinceLevelLoad.ToString("F2");
+        if (!win)
+            timerText.text = "Time: " + Time.timeSinceLevelLoad.ToString("F2");
         if (EnemyController.isDead)
         {
             loseTextObject.SetActive(true);

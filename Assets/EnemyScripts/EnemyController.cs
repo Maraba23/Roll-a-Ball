@@ -60,7 +60,6 @@ public class EnemyController : MonoBehaviour
         while (!isDead)
         {
             float waitTime = 80.0f; //Random.Range(soundMinDelay, soundMaxDelay);
-            Debug.Log($"Próximo som em {waitTime} segundos."); // Isto imprimirá o tempo de espera no console
             yield return new WaitForSeconds(waitTime);
             
             // Escolhe um som aleatório para tocar se houver sons disponíveis
