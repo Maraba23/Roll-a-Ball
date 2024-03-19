@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
        countText.text = "Count: " + count.ToString();
        if (count == 0)
        {
+            Cursor.lockState = CursorLockMode.None;
            winTextObject.SetActive(true);
        }
    }
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
         timerText.text = "Time: " + Time.timeSinceLevelLoad.ToString("F2");
         if (EnemyController.isDead)
         {
+            Cursor.lockState = CursorLockMode.None;
             loseTextObject.SetActive(true);
         }
     }
